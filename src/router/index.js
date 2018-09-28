@@ -16,7 +16,7 @@ const router = new Router({
 		name:'events',
 		component: EventList,
 		icon: 'fa-futbol',
-		label: 'Events',
+		label: 'Betslip testing',
 		render: true
 	}, {
 		path:'/architectTool',

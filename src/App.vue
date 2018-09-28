@@ -30,17 +30,20 @@
                 :clipped-left="clipped"
                 dark
                 app>
-            <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+            <v-btn icon @click.stop="drawer = !drawer"><v-icon v-html="'fas fa-bars'"/></v-btn>
             <v-btn icon @click.stop="miniVariant = !miniVariant">
                 <v-icon v-html="miniVariant ? 'fas fa-chevron-right' : 'fas fa-chevron-left'"></v-icon>
             </v-btn>
             <v-toolbar-title v-text="title"></v-toolbar-title>
+            <v-spacer/>
         </v-toolbar>
-        <v-content>
-            <v-container>
-                <router-view/>
-            </v-container>
-        </v-content>
+        <main>
+            <v-content>
+                <v-container fluid>
+                    <router-view/>
+                </v-container>
+            </v-content>
+        </main>
         <v-footer :fixed="fixed" app>
             <span>&copy; 2017</span>
         </v-footer>
@@ -48,12 +51,11 @@
 </template>
 
 <script>
-	import HelloWorld from './components/HelloWorld'
 
 	export default {
 		name: 'App',
 		components: {
-			HelloWorld
+
 		},
 		data () {
 			return {

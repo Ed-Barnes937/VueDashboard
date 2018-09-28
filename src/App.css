@@ -1,3 +1,55 @@
 .v-toolbar.catena{
     background: linear-gradient(to right, #f03e6a, #f53942);
 }
+.v-toolbar.eventBar{
+    background: #e6ebed !important;
+    color: black !important;
+}
+
+#app
+{
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /*color: #2c3e50;*/
+    margin-top: 60px;
+}
+
+body
+{
+    cursor: default;
+}
+
+.flex{
+    padding: 8px;
+}
+
+main > .v-content > .v-container
+{
+    width: 100%;
+}
+
+main > .v-content
+{
+    padding-top: 8px !important;
+}
+
+.toolbar__items h5
+{
+    padding-top: 16px;
+}
+
+main .v-container .v-toolbar
+{
+    margin-bottom: 16px;
+}
+
+.grid-toolbar .input-group.search-in-select .input-group__input
+{
+    margin-top: 17px;
+}
+
+.input-group
+{
+    padding-right: 16px;
+}
