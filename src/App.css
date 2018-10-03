@@ -44,6 +44,10 @@ main .v-container .v-toolbar
     margin-bottom: 16px;
 }
 
+div.eventName{
+    font-size: 12px;
+}
+
 .grid-toolbar .input-group.search-in-select .input-group__input
 {
     margin-top: 17px;

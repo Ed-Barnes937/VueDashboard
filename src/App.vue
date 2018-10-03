@@ -45,7 +45,6 @@
             </v-content>
         </main>
         <v-footer :fixed="fixed" app>
-            <span>&copy; 2017</span>
         </v-footer>
     </v-app>
 </template>
