@@ -50,7 +50,6 @@
 </template>
 
 <script>
-
 	export default {
 		name: 'App',
 		components: {
@@ -68,9 +67,9 @@
 			}
 		},
         computed: {
-			sidebar () {
+			sidebar() {
 				return this.$router.options.routes.filter(route => route.render)
-			}
+			},
         }
 	}
 </script>

@@ -6,7 +6,7 @@
                     <div>
                         <div class="headline">{{BetName}}</div>
                         <div class="eventName">{{EventName}}</div>
-                        <div>{{BettingType}}</div>
+                        <div class="eventName">{{BettingType}}</div>
                     </div>
                 </v-card-title>
             </v-flex>

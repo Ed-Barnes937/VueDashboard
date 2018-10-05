@@ -4,10 +4,9 @@
             <v-toolbar color="red" dark>
                 <v-toolbar-title>Labrokes</v-toolbar-title>
                 <v-spacer/>
-                Betslip
+                jacksrptest123<br>£312.07
             </v-toolbar>
             <v-divider light/>
-            <!--<BetEntry BetName="Liverpool" EventName="Chelsea v Man Utd" BettingType="match betting" Odds="6/4"></BetEntry>-->
             <BetEntry v-for="(bet, i) in betList" :key="i"
                 :id="bet.storeID" :BetName="bet.betName" :EventName="bet.name" :BettingType="bet.betType" :Odds="bet.odds"
             />
@@ -64,8 +63,6 @@
         data() {
 			return {
 				snackbar: false,
-                betReceipt: 0,
-                returnAmount: 0,
                 compliance: require('../assets/compliance.png')
             }
         },
@@ -77,26 +74,61 @@
 				return this.$store.getters.getStakeTotal
             },
             text(){
-				return 'Bet '+ this.betReceipt + ' placed with potential return of: £'+this.returnAmount
-            }
+				return 'Bet '+ this.betReceipt.receiptID + ' placed with potential return of: £'+this.betReceipt.potentialReturn
+            },
+            betReceipt() {return this.$store.getters.getReceipt},
+            betToken() {return this.$store.getters.getToken || ""}
         },
         methods: {
 			placeBet() {
-				let me = this
-                let token = "a2V0L1hGY1NOV3ZSOElQRlNiTUd6b3dSRGRLSUphY0pVKzlFZWVRd3E0eUVhNFJ1UzVOWmZFVTNzS3ZDRUlUd1FrMVBDL1hFemcxcQ0KNzJ3TFdyUTBPV2daalo3UEdITkQ4UGpIeGY1Ry9JanR6a0MwZlIybDVvWlZYVGs3V01zdjNEOWpOVERPS2ZQbVJINW10Q21oeUZmdw0KVi9jTjl0ZmRsSGU0QTd4SzM4OE54VERlL3Vka01YeTJnRzlSY0tDSmkvM2sycnNuL0ttbVZBRzFVWXpobzYyMGMydGhobHNVNnBPMQ0KNkFCdjY2a2Z0YWpQN2hFQ1R3eThLM0x2V0xiVEJCWnpXU3gwQUpDdmJUSWt0aFhLNlV1L0pHN1h0djNoL3IrQWhBUEpFTG0xeGg2Sg0KOUdZZTVhN0ViZWRXSHlVYk9xempkRDR5ZEJ5Z0pNeHRwMmgwcjBCYnNzYTgyWGNsTkRaL25Rb1lYUlVHdHh0WHNNTnFSVlMvZEY4Ng0KVG1NVWlDT0tWTHJaa01ab2QzT05SZXZEM1ljSmFTS3BlN2YzWG9jTEVpeERJODYyNmhXK1QwU0tNVHJWWnBJZkFQNW4"
-				axios.defaults.headers.common['Authorization'] = "Bearer " + token
-				axios.post("http://dashboard.catena.media:5000/bets", me.$store.getters.getBets)
-                    .then(response => {
-                    	console.log(response.data.data.items[0].betslip.singleBet.potentialPayout)
-                        this.betReceipt = response.data.data.items[0].betslip.singleBet.betReceipt
-                        this.returnAmount = response.data.data.items[0].betslip.singleBet.potentialPayout
-                        this.snackbar = true
-                    })
-                    .catch(e => {
-                    	console.log(e)
-                    })
+				let test = false;
+				let mockData = {
+					singleBet: {
+						acceptanceStatus: "Success",
+						betKey: 1750100704,
+						betNo: 1,
+						betPlacedDateTime: "2018-10-04T09:09:02Z",
+						betReceipt: "O/154524014/0001619",
+						currencyCode: "GBP",
+						denPrice: 5,
+						ipAddress: "31.24.216.3",
+						isEachWay: false,
+        				numLines: 1,
+		        		numPrice: 16,
+				        potentialPayout: 0.21,
+				        selectionKey: 774849067,
+				        totalBetStake: 0.05
+                    }
+				}
+				if (!test) {
+					axios.post("http://dashboard.catena.media:5000/bets", this.$store.getters.getBets, {headers: {'X-ACCESS-TOKEN': "Bearer " + this.betToken}})
+						.then(response => {
+							let betData = response.data.data.items[0].betslip.singleBet
+							let payload = {
+								receiptID: betData.betReceipt,
+								potentialPayout: betData.potentialPayout,
+								betDate: betData.betPlacedDateTime.substring(0,10)
+							}
+							this.$store.commit('setreceiptData', payload)
+                            this.snackbar = true
+							this.$store.commit('makeBetDone')
+						})
+						.catch(e => {
+							console.log(e)
+						})
+				}
+				else {
+					let payload = {
+						receiptID: mockData.singleBet.betReceipt,
+                        potentialPayout: mockData.singleBet.potentialPayout,
+                        betDate: mockData.singleBet.betPlacedDateTime
+                    }
+                    this.snackbar = true;
+					this.$store.commit('setreceiptData', payload)
+					this.$store.commit('makeBetDone')
+                }
             }
-        }
+        },
 	}
 </script>
 

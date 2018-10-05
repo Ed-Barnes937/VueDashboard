@@ -5,8 +5,11 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	state: {
+		loggedIn: false,
+		token: "",
 		betslip: [],
-		count: 0
+		count: 0,
+		betDone: false
 	},
 	mutations: {
 		addBet (state, bet) {
@@ -30,6 +33,19 @@ const store = new Vuex.Store({
 			if (betID != -1) {
 				state.betslip[betID].stake = parseFloat(payload.stake)
 			}
+		},
+		setreceiptData(state, payload) {
+			state.betslip[0].receiptID = payload.receiptID
+			state.betslip[0].potentialPayout = payload.potentialPayout
+			state.betslip[0].betDate = payload.betDate
+		},
+		makeBetDone: (state) => {
+			state.betDone = !state.betDone
+		},
+		clearBets: (state) => {
+			state.betslip = []
+			state.count = 0
+			state.betDone = false
 		}
 	},
 	actions: {
@@ -56,6 +72,25 @@ const store = new Vuex.Store({
 					"stake": obj.stake
 				}
 			})[0] || {}
+		},
+		getReceipt: (state) => {
+			return state.betslip.map(obj => {
+				return {
+					"receiptID": obj.receiptID.toString(),
+					"potentialReturn": obj.potentialPayout,
+					"betDate": obj.betDate
+				}
+			})[0] || {
+				"receiptID": 0,
+				"potentialReturn": 0,
+				"betDate": "2018/10/04"
+			}
+		},
+		getToken: (state) => {
+			return state.token
+		},
+		getLoggedIn: (state) => {
+			return state.loggedIn
 		}
 	}
 })
